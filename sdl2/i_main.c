@@ -1,16 +1,23 @@
-#include "../d2udef.h"
 #include "../doomdef.h"
 #include "../d_main.h"
 #include "../m_argv.h"
+#include <SDL.h>
+
+SDL_RWops* logstream = NULL;
 
 int SDL_main(int argc, char **argv)
 {
 	myargc = argc;
 	myargv = argv; /// \todo pull out path to exe from this string
 
+	// init logstream
+	logstream = SDL_RWFromFile("sdllog.txt", "a");
+	if (!logstream)
+		I_Error("Unable to get write access for log file. \n Are you running multiple instances of SRB2?");
+
 	// startup SRB2
 	CONS_Printf ("Setting up SRB2...\n");
-	D_SRB2Main(WND_SDL2);
+	D_SRB2Main();
 	CONS_Printf ("Entering main game loop...\n");
 	// never return
 	D_SRB2Loop();

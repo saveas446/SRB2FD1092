@@ -27,7 +27,7 @@
 #include <unistd.h>
 #endif
 #ifdef SDLIO
-#if defined(_XBOX) && defined(_MSC_VER)
+#if (defined(_XBOX) && defined(_MSC_VER)) || defined(SRB2_SDL2)
 #include <SDL_rwops.h>
 #else
 #include <SDL/SDL_rwops.h>
@@ -3987,10 +3987,11 @@ static menuitem_t VideoOptionsMenu[]=
 {
 	// Tails
 	{IT_STRING | IT_SUBMENU, NULL, "Video Modes...",      &VidModeDef,      0},
-#if defined(LINUX) || defined (SDL)
+#if defined(LINUX) || defined (SDL) || defined (SRB2_SDL2)
 	{IT_STRING|IT_CVAR,      NULL, "Fullscreen",          &cv_fullscreen,  10},
 #endif
 #ifdef HWRENDER
+
 	//17/10/99: added by Hurdler
 	{IT_CALL|IT_WHITESTRING, NULL, "3D Card Options...",  M_OpenGLOption,  20},
 #endif

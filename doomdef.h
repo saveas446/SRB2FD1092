@@ -96,7 +96,13 @@
 #if defined(__APPLE_CC__) || (defined(_XBOX) && defined(_MSC_VER))
 #include <SDL_rwops.h>
 #else
+
+#ifdef SRB2_SDL2
+#include <SDL_rwops.h>
+#else
 #include <SDL/SDL_rwops.h>
+#endif
+
 #endif
 extern SDL_RWops* logstream;
 #else

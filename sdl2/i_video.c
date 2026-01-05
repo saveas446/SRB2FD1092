@@ -1,7 +1,6 @@
 #include <SDL.h>
 
 #include "../command.h"
-#include "../d2udef.h"
 #include "../doomdef.h"
 #include "../i_system.h"
 #include "../i_video.h"
@@ -16,7 +15,7 @@ boolean highcolor = false;
 
 boolean allow_fullscreen = false;
 
-consvar_t cv_vidwait = {"vid_wait", "On", CV_SAVE, CV_OnOff, NULL, 0, NULL, NULL, 0, 0, NULL};
+consvar_t cv_vidwait = {"vid_wait", "On", CV_SAVE, CV_OnOff, NULL, 0, "On", NULL, 0, 0, NULL};
 
 // Stores the current mode
 int currentmode;
@@ -260,14 +259,13 @@ int VID_SetMode(int modenum)
 	vid.dupy = vid.height / 200;
 	vid.recalc = 1;
 
-	// Handle 
-	if (cv_fullscreen.value)
+	if (!strcmp(cv_fullscreen.string, "Yes"))
 		flags = SDL_WINDOW_FULLSCREEN;
 	else
 		flags = NULL;
 
 	// Init window (hardcoded to 640x400 for now) in the center of the screen
-	SDL_window = SDL_CreateWindow(va("Demo 2 Ultimate v%d.%d.%d", MAJORVER, MINORVER, TINYVER), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, vid.width, vid.height, flags);
+	SDL_window = SDL_CreateWindow(va("SRB2 %s (SDL2 version)", VERSIONSTRING), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, vid.width, vid.height, flags);
 
 	if (!SDL_window)
 		I_Error("VID_SetMode(): Could not create window!");
@@ -293,8 +291,8 @@ int VID_SetMode(int modenum)
 }
 
 void I_StartupGraphics(void) {
-	if (M_CheckParm("-win")) 
-		cv_fullscreen.value = false;
+	if (M_CheckParm("-win"))
+		CV_Set(&cv_fullscreen, "No");
 		
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 		I_Error("I_StartupGraphics(): Could not initialize SDL2: %s\n", SDL_GetError());
@@ -302,7 +300,7 @@ void I_StartupGraphics(void) {
 	if (VID_InitConsole())
 		I_Error("I_StartupGraphics(): Could not initialize commands / console variables!\n");
 
-	VID_SetMode(3);
+	surface = SDL_CreateRGBSurfaceWithFormat(0, vid.width, vid.height, 8, SDL_PIXELFORMAT_INDEX8);
 
 	graphics_started = true;
 }

@@ -909,9 +909,11 @@ void CON_LogMessage(const char* msg)
 #ifdef LOGMESSAGES
 			if(*p == '\n' && ( p == msg || *(p-1) != '\r') && ls)
 			{
-#ifdef _WINDOWS
+
+// Trying to get the SDL_RWwrite call to activate when we're using the SDL2 backend
+#if defined(_WINDOWS) && !defined(SRB2_SDL2)
 				FPutChar(logstream, "\r");
-#elif defined (_WIN32) || defined(_WIN64) || defined(_WIN32_WCE) || defined(PC_DOS)
+#elif defined (_WIN32) || defined(_WIN64) || defined(_WIN32_WCE) || defined(PC_DOS) || defined(SRB2_SDL2)
 #ifdef SDLIO
 				SDL_RWwrite(logstream, "\r", 1, 1);
 #else

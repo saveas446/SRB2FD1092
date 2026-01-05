@@ -6,6 +6,8 @@
 #include "../keys.h"
 #include "../i_system.h"
 
+#include "i_main.h"
+
 #include <SDL.h>
 #include <SDL_keycode.h>
 
@@ -67,6 +69,8 @@ ULONG I_GetTime (void)
 #endif
 
 void I_Sleep(void){}
+
+void I_DoStartupMouse(void) {}
 
 void I_GetEvent(void){
 	event_t e_w;
@@ -253,8 +257,8 @@ void I_GetEvent(void){
 					break;
 				case SDL_MOUSEMOTION:
 					e_w.type = ev_mouse;
-					e_w.data2 = e_s.motion.xrel;
-					e_w.data3 = e_s.motion.yrel;
+					e_w.data2 = e_s.motion.xrel * 2;
+					e_w.data3 = e_s.motion.yrel * -1; // Invert
 					D_PostEvent(&e_w);
 					break;
 				default:
@@ -411,7 +415,9 @@ int I_StartupSystem(void)
 	return -1;
 }
 
-void I_ShutdownSystem(void){}
+void I_ShutdownSystem(void){
+	SDL_RWclose(logstream);
+}
 
 void I_GetDiskFreeSpace(INT64* freespace)
 {
