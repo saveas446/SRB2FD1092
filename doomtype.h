@@ -55,7 +55,7 @@ typedef unsigned short USHORT;
 
 #if defined(_MSC_VER) || defined( __OS2__)
 	// Microsoft VisualC++
-#ifdef _MSC_VER
+#if _MSC_VER < 1900
 	#define vsnprintf               _vsnprintf
 #endif
 	#define strncasecmp             strnicmp
