@@ -26,7 +26,7 @@
 typedef void GlidePatch_t;
 #endif
 #ifdef SDLIO
-#if (defined(_XBOX) && defined(_MSC_VER)) || defined(SRB2_SDL2)
+#if defined(_XBOX) && defined(_MSC_VER)
 #include <SDL_rwops.h>
 #else
 #include <SDL/SDL_rwops.h>
